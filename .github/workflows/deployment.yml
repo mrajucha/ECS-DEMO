@@ -30,14 +30,15 @@ jobs:
          uses: aws-actions/amazon-ecr-login@v2
 
        - name: Build Docker image
-        #  run: docker build -t ${{secrets.ECR_REPO_NAME}}:latest .
-         run: docker build -t myapp:latest .
+         run: docker build -t ${{secrets.ECR_REPO_NAME}} .
 
        - name: Debug ECR Registry
          run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}"
        
-       - name: Tag Docker image
-         run: docker tag myapp:latest $ECR_REGISTRY/${{ secrets.ECR_REPO_NAME }}:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+       - name: Tag Docker image 
+         env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         run: docker tag ${{secrets.ECR_REPO_NAME}}:latest $ECR_REGISTRY/${{ secrets.ECR_REPO_NAME }}:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
          
        
        - name: Push Docker image to ECR
