@@ -1,0 +1,18 @@
+
+
+name: IAC deployment to AWS
+
+# on: 
+#    push:
+#        branches:
+#          - main
+
+jobs:
+    iac_deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+
+            - name: aws configure
+
+
