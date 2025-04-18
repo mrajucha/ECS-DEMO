@@ -21,7 +21,9 @@ jobs:
            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
            aws-region: ${{secrets.AWS_REGION}}
        - name: create aws ecr repository
-         run: aws ecr create-repository --repository-name ${{secrets.ECR_REPO_NAME}} --region ${{secrets.AWS_REGION}}
+         run: | 
+              aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPO_NAME }} --region ${{ secrets.AWS_REGION }} || \
+              aws ecr create-repository --repository-name ${{ secrets.ECR_REPO_NAME }} --region ${{ secrets.AWS_REGION }}
 
        - name: Login to ECR
          id: login-ecr
@@ -35,4 +37,6 @@ jobs:
 
        - name: Push Docker image to ECR
          run: docker push simple_tag:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+         with:
+           
       
