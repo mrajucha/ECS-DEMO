@@ -31,8 +31,8 @@ jobs:
          run: docker build -t ${{secrets.ECR_REPO_NAME}} .
 
        - name: Tag Docker image
-         run: docker tag ${{secrets.ECR_REPO_NAME}}:latest ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+         run: docker tag ${{secrets.ECR_REPO_NAME}}:latest   simple_tag:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
 
        - name: Push Docker image to ECR
-         run: docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+         run: docker push simple_tag:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
       
