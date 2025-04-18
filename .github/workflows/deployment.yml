@@ -37,6 +37,6 @@ jobs:
 
        - name: Push Docker image to ECR
          run: docker push simple_tag:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
-         with:
+         
            
       
