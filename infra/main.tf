@@ -24,6 +24,6 @@ resource "aws_vpc" "demo_vpc" {
 
 
 resource "aws_subnet" "name" {
-  vpc_id = aws_vpc.demo_vpc
+  vpc_id = aws_vpc.demo_vpc.id
   cidr_block = "10.0.0.0/24"
 }
