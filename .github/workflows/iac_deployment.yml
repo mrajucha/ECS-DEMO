@@ -2,17 +2,38 @@
 
 name: IAC deployment to AWS
 
-# on: 
-#    push:
-#        branches:
-#          - main
+on: 
+   workflow_dispatch:
+   push:
+       branches:
+         - main
 
 jobs:
     iac_deploy:
         runs-on: ubuntu-latest
         steps:
             - name: checkout
+              uses: actions/checkout@v3
+
+            - name: prepare terraform
+              uses: hashicorp/setup-terraform@v1
 
             - name: aws configure
+              uses: aws-actions/configure-aws-credentials@v4
+              with: 
+                  aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
+                  aws-region: ${{secrets.AWS_REGION}}
+                  
+                  
+            - name: install terraform
+            - name: terraform init
+              run: terraform init
+
+            - name: terraform plan
+              run: terraform plan
+
+            - name: terraform apply
+              run: terraform apply -auto-approve                
 
 
