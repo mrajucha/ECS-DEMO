@@ -3,10 +3,10 @@
 name: IAC deployment to AWS
 
 on: 
-   workflow_dispatch:
-   push:
-       branches:
-         - main
+    workflow_dispatch:
+    push:
+        branches:
+          - main
 
 jobs:
     iac_deploy:
