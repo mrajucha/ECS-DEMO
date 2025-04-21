@@ -1,5 +1,5 @@
 
-name: Build And Push Docker Image
+name: DEPLOY INFRA | SERVICE
 
 on: 
   workflow_dispatch:
