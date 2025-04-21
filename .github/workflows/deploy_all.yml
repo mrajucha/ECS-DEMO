@@ -1,0 +1,65 @@
+
+name: Build And Push Docker Image
+
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+jobs:
+   BuildAndPush:
+     name: Build and Push Docker images to ECR
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout code
+         uses: actions/checkout@v4
+       - name: setup aws credentials
+         uses: aws-actions/configure-aws-credentials@v4
+         with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY}}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
+           aws-region: ${{secrets.AWS_REGION}}
+
+       - name: terraform init
+         run: | 
+              cd infra
+              terraform init
+
+       - name: terraform plan
+         run: | 
+              cd infra
+              terraform plan
+
+       - name: terraform apply
+         run: | 
+              cd infra
+              terraform apply -auto-approve         
+      #  - name: create aws ecr repository
+      #    run: | 
+      #         aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPO_NAME }} --region ${{ secrets.AWS_REGION }} || \
+      #         aws ecr create-repository --repository-name ${{ secrets.ECR_REPO_NAME }} --region ${{ secrets.AWS_REGION }}
+
+       - name: Login to ECR
+         id: login-ecr
+         uses: aws-actions/amazon-ecr-login@v2
+
+       - name: Build Docker image
+         run: docker build -t ${{secrets.ECR_REPO_NAME}} .
+
+      #  - name: Debug ECR Registry
+      #    run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}"
+       
+       - name: Tag Docker image 
+         env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         run: docker tag ${{secrets.ECR_REPO_NAME}}:latest $ECR_REGISTRY/${{ secrets.ECR_REPO_NAME }}:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+         
+       
+       - name: Push Docker image to ECR
+         env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         run: docker push $ECR_REGISTRY/${{ secrets.ECR_REPO_NAME }}:latest #${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/${{secrets.ECR_REPO_NAME}}:latest
+         
+           
+      
