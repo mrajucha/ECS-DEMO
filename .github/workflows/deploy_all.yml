@@ -21,6 +21,9 @@ jobs:
            aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY}}
            aws-region: ${{secrets.AWS_REGION}}
 
+       - name: aws configure
+         uses: aws-actions/configure-aws-credentials@v4    
+
        - name: terraform init
          run: | 
               cd infra
