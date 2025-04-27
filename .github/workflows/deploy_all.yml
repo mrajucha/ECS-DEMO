@@ -26,9 +26,9 @@ jobs:
 
        - name: terraform init
          run: | 
-              cd infra
+              cd infra       
               terraform init
-
+        # wirking-directory instead of cd
        - name: terraform plan
          run: | 
               cd infra
@@ -37,7 +37,10 @@ jobs:
        - name: terraform apply
          run: | 
               cd infra
-              terraform apply -auto-approve         
+              terraform apply
+
+         if: github.event.inputs.approved == 'true'     
+
       #  - name: create aws ecr repository
       #    run: | 
       #         aws ecr describe-repositories --repository-names ${{ secrets.ECR_REPO_NAME }} --region ${{ secrets.AWS_REGION }} || \
