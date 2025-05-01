@@ -43,8 +43,14 @@ jobs:
       #     issue-title: "Manual Approval Required for Terraform Apply"
       #     issue-body: "Please approve or deny the deployment."
       #    #needs: [terraform plan] should be added in job stage level
+       - name: Manual Approval
+         uses: hmarr/auto-approve-action@v2
+         with:     
+             prompt: "Do you want to perform these actions? Terraform will perform the actions described above. Only 'yes' will be accepted to approve."
+  
 
        - name: terraform apply 
+         if: sucess()
          run: | 
               cd infra
               terraform apply --auto-approve
