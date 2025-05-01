@@ -44,7 +44,7 @@ jobs:
       #     issue-body: "Please approve or deny the deployment."
       #    #needs: [terraform plan] should be added in job stage level
 
-       - name: terraform apply
+       - name: terraform apply --auto-approve
          run: | 
               cd infra
               terraform apply   
