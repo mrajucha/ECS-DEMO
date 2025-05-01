@@ -50,7 +50,7 @@ jobs:
   
 
        - name: terraform apply 
-         if: sucess()
+         if: success()
          run: | 
               cd infra
               terraform apply --auto-approve
