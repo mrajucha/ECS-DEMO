@@ -1,0 +1,46 @@
+name: IAC deployment with input
+
+on:
+    workflow_dispatch:
+       inputs: 
+         terraform module:  
+           description: 'Select terraform module to deploy' 
+           type: choice
+           required: true
+           options:
+             - VPC
+             - EC2
+             - S3
+             - RDS
+
+         Environment:
+           type: environment
+           description: "select the environment"
+
+jobs:
+   IAC:
+      name: terraform plan and apply
+      runs-on: ubuntu-latest
+
+      env:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }} 
+        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+        region: ${{ secrets.AWS_REGION }}
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+
+        - name: set-up terraform
+          uses: hashicorp/setup-terraform@v3 
+
+        - name: terraform init
+          run:  terraform init
+
+        - name: terraform plan
+          run: terraform plan
+        
+        - name: terraform Apply
+          run: terraform apply  
+          
