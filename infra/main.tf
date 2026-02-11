@@ -8,6 +8,9 @@ resource "aws_ecr_repository" "my_repo" {
     # encryption_configuration {
     #   encryption_type = AES256
     # }
+    tags = {
+      name = "demo-ecr"
+    }
   
 }
 

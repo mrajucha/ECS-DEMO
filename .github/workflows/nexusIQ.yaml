@@ -1,0 +1,17 @@
+name: Nexus IQ scan report
+
+on: workflow_dispatch
+
+jobs: 
+    nexuxIQ-scan:
+        runs-on: ubuntu-latest
+
+        steps: 
+            - name: checkout code
+              uses: actions/checkout@4
+
+            - name: NexusIQ setup
+              id: evaluate
+              uses: sonatype/actions/evaluate@4
+              with: 
+                
